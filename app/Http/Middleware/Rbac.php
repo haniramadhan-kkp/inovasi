@@ -13,6 +13,15 @@ class Rbac
 	*/
 	public function handle($request, Closure $next)
 	{
+		$page = $request->segment(1, "home");
+		$action = $request->segment(2, "list");
+		
+		$user = $request->user();
+		
+		$page_path = strtolower("$page/$action");
+		if (!$user->canAccess($page_path)) {
+			return abort(403, "Forbidden");
+		}
 		return $next($request);
 	}
 }

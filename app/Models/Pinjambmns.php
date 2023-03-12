@@ -28,7 +28,7 @@ class Pinjambmns extends Model
      * @var array
      */
 	protected $fillable = [
-		'peminjam_id','atas_nama','tanggal_pinjam','tanggal_kembali','bmn_dipinjam','keperluan','kelengkapan','catatan','tanggal_pengembalian','surat_peminjaman','foto_pengambilan','foto_pengembalian'
+		'peminjam_id','atas_nama','tanggal_pinjam','tanggal_kembali','bmn_dipinjam','keperluan','kelengkapan','catatan','tanggal_pengembalian','surat_peminjaman','foto_pengambilan','foto_pengembalian','statuspinjambmn_id'
 	];
 	public $timestamps = false;
 	
@@ -79,7 +79,8 @@ class Pinjambmns extends Model
 			"tanggal_pengembalian",
 			"surat_peminjaman",
 			"foto_pengambilan",
-			"foto_pengembalian" 
+			"foto_pengembalian",
+			"statuspinjambmn_id" 
 		];
 	}
 	
@@ -105,7 +106,8 @@ class Pinjambmns extends Model
 			"tanggal_pengembalian",
 			"surat_peminjaman",
 			"foto_pengambilan",
-			"foto_pengembalian" 
+			"foto_pengembalian",
+			"statuspinjambmn_id" 
 		];
 	}
 	
@@ -131,7 +133,8 @@ class Pinjambmns extends Model
 			"tanggal_pengembalian",
 			"surat_peminjaman",
 			"foto_pengambilan",
-			"foto_pengembalian" 
+			"foto_pengembalian",
+			"statuspinjambmn_id" 
 		];
 	}
 	
@@ -157,7 +160,8 @@ class Pinjambmns extends Model
 			"tanggal_pengembalian",
 			"surat_peminjaman",
 			"foto_pengambilan",
-			"foto_pengembalian" 
+			"foto_pengembalian",
+			"statuspinjambmn_id" 
 		];
 	}
 	
@@ -169,7 +173,6 @@ class Pinjambmns extends Model
      */
 	public static function editFields(){
 		return [ 
-			"id",
 			"peminjam_id",
 			"atas_nama",
 			"tanggal_pinjam",
@@ -181,7 +184,70 @@ class Pinjambmns extends Model
 			"tanggal_pengembalian",
 			"surat_peminjaman",
 			"foto_pengambilan",
-			"foto_pengembalian" 
+			"foto_pengembalian",
+			"id",
+			"statuspinjambmn_id" 
+		];
+	}
+	
+
+	/**
+     * return prosesPengambilanBmn page fields of the model.
+     * 
+     * @return array
+     */
+	public static function prosesPengambilanBmnFields(){
+		return [ 
+			"kelengkapan",
+			"foto_pengambilan",
+			"id",
+			"statuspinjambmn_id" 
+		];
+	}
+	
+
+	/**
+     * return listProsesPengambilanBmn page fields of the model.
+     * 
+     * @return array
+     */
+	public static function listProsesPengambilanBmnFields(){
+		return [ 
+			"id",
+			"created_at",
+			"updated_at",
+			"peminjam_id",
+			"atas_nama",
+			"tanggal_pinjam",
+			"tanggal_kembali",
+			"bmn_dipinjam",
+			"keperluan",
+			"foto_pengembalian",
+			"foto_pengambilan",
+			"statuspinjambmn_id" 
+		];
+	}
+	
+
+	/**
+     * return exportListProsesPengambilanBmn page fields of the model.
+     * 
+     * @return array
+     */
+	public static function exportListProsesPengambilanBmnFields(){
+		return [ 
+			"id",
+			"created_at",
+			"updated_at",
+			"peminjam_id",
+			"atas_nama",
+			"tanggal_pinjam",
+			"tanggal_kembali",
+			"bmn_dipinjam",
+			"keperluan",
+			"foto_pengembalian",
+			"foto_pengambilan",
+			"statuspinjambmn_id" 
 		];
 	}
 }

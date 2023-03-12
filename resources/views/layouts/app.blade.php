@@ -16,6 +16,7 @@
 		<link rel="stylesheet" href="{{ asset('css/blueimp-gallery.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/bootstrap-theme-pulse.css') }}" />
 	<link rel="stylesheet" href="{{ asset('css/flatpickr.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('css/dropzone.min.css') }}" />
 		<link rel="stylesheet" href="{{ asset('css/custom-style.css') }}" />
 		<script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 		@yield('pagecss')
@@ -33,11 +34,15 @@
 		</script>
 	</head>
 	<?php
-		$page_name = request()->segment(1)  ?? 'index';
-		$page_action = request()->segment(2)  ?? 'index';
+		$body_id = "index";
+		if(auth()->check()){
+			$body_id = "main";
+		}
+		$page_name = request()->segment(1) ?? 'index';
+		$page_action = request()->segment(2) ?? 'index';
 		$body_class = "$page_name-$page_action";
 	?>
-	<body id="main" class="<?php echo $body_class ?>">
+	<body id="<?php echo $body_id ?>" class="with-login <?php echo $body_class ?>">
 		<div id="page-wrapper">
 			<!-- Show progress bar when ajax upload-->
 			<div id="ajax-progress-bar" class="progress"  style="display:none">
@@ -143,6 +148,7 @@
 		<script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/plugins/app-plugins.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/plugins/flatpickr.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/plugins/dropzone.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/page-scripts.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/form-page-scripts.js') }}"></script>
 		@yield('pagejs')

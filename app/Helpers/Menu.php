@@ -23,18 +23,6 @@
 		],
 		
 		[
-			'path' => 'notulensiroleusers',
-			'label' => "Notulensiroleusers", 
-			'icon' => '<i class="material-icons">extension</i>'
-		],
-		
-		[
-			'path' => 'notulensiroles',
-			'label' => "Notulensiroles", 
-			'icon' => '<i class="material-icons">extension</i>'
-		],
-		
-		[
 			'path' => 'izinkepegawaians',
 			'label' => "Izinkepegawaians", 
 			'icon' => '<i class="material-icons">extension</i>'
@@ -47,9 +35,27 @@
 		],
 		
 		[
+			'path' => 'Pinjambmns',
+			'label' => "Peminjaman BMN", 
+			'icon' => '<i class="material-icons ">devices_other</i>','submenu' => [
+		[
+			'path' => 'pinjambmns/ajukan_pinjam_bmn',
+			'label' => "Ajukan", 
+			'icon' => '<i class="material-icons ">near_me</i>'
+		],
+		
+		[
+			'path' => 'pinjambmns/list_proses_pengambilan_bmn',
+			'label' => "Pengambilan", 
+			'icon' => '<i class="material-icons ">shopping_cart</i>'
+		],
+		
+		[
 			'path' => 'pinjambmns',
-			'label' => "Pinjambmns", 
-			'icon' => '<i class="material-icons">extension</i>'
+			'label' => "Daftar Peminjaman", 
+			'icon' => '<i class="material-icons ">format_list_bulleted</i>'
+		]
+	]
 		],
 		
 		[
@@ -109,6 +115,18 @@
 		[
 			'path' => 'realisasis',
 			'label' => "Realisasis", 
+			'icon' => '<i class="material-icons">extension</i>'
+		],
+		
+		[
+			'path' => 'roles',
+			'label' => "Roles", 
+			'icon' => '<i class="material-icons">extension</i>'
+		],
+		
+		[
+			'path' => 'permissions',
+			'label' => "Permissions", 
 			'icon' => '<i class="material-icons">extension</i>'
 		]
 	] ;

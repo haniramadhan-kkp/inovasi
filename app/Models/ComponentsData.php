@@ -73,11 +73,11 @@ class ComponentsData{
 	
 
 	/**
-     * notulensirole_id_option_list Model Action
+     * kegiatan_id_option_list Model Action
      * @return array
      */
-	function notulensirole_id_option_list(){
-		$sqltext = "SELECT id as value, name as label FROM notulensiroles";
+	function kegiatan_id_option_list(){
+		$sqltext = "SELECT id as value, name as label FROM kegiatans";
 		$query_params = [];
 		$arr = DB::select(DB::raw($sqltext), $query_params);
 		return $arr;
@@ -85,11 +85,23 @@ class ComponentsData{
 	
 
 	/**
-     * kegiatan_id_option_list Model Action
+     * role_id_option_list Model Action
      * @return array
      */
-	function kegiatan_id_option_list(){
-		$sqltext = "SELECT id as value, name as label FROM kegiatans";
+	function role_id_option_list(){
+		$sqltext = "SELECT role_id as value, role_name as label FROM roles";
+		$query_params = [];
+		$arr = DB::select(DB::raw($sqltext), $query_params);
+		return $arr;
+	}
+	
+
+	/**
+     * statuspinjambmn_id_option_list Model Action
+     * @return array
+     */
+	function statuspinjambmn_id_option_list(){
+		$sqltext = "SELECT id as value, name as label FROM statuspinjambmns";
 		$query_params = [];
 		$arr = DB::select(DB::raw($sqltext), $query_params);
 		return $arr;
@@ -129,5 +141,35 @@ class ComponentsData{
 		$query_params = [];
 		$arr = DB::select(DB::raw($sqltext), $query_params);
 		return $arr;
+	}
+	
+
+	/**
+     * Check if value already exist in Users table
+	 * @param string $value
+     * @return bool
+     */
+	function users_username_value_exist(Request $request){
+		$value = trim($request->value);
+		$exist = DB::table('users')->where('username', $value)->value('username');   
+		if($exist){
+			return true;
+		}
+		return false;
+	}
+	
+
+	/**
+     * Check if value already exist in Users table
+	 * @param string $value
+     * @return bool
+     */
+	function users_email_value_exist(Request $request){
+		$value = trim($request->value);
+		$exist = DB::table('users')->where('email', $value)->value('email');   
+		if($exist){
+			return true;
+		}
+		return false;
 	}
 }

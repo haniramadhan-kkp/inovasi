@@ -50,6 +50,7 @@ function loadPageData(ajaxPage, url){
 		}
 	});
 }
+Dropzone.autoDiscover = false;
 function initPlugins(){
 	$('.datepicker').flatpickr({
 		altInput: true, 
@@ -67,6 +68,96 @@ function initPlugins(){
 		locale: {
 			rangeSeparator: '-to-'
 		}
+	});
+	Dropzone.autoDiscover = false;
+	$('.dropzone').each(function(){
+		let dropzoneControl = $(this)[0].dropzone;
+		if (dropzoneControl) {
+			dropzoneControl.destroy();
+		}
+		var uploadUrl = $(this).attr('uploadurl');
+		var multiple = $(this).data('multiple') || false;
+		var limit =$(this).attr('maximum') || 1;
+		var size = $(this).attr('filesize') || 10;
+		var extensions = $(this).attr('extensions') || "";
+		var resizewidth = $(this).attr('resizewidth') || null;
+		var resizeheight = $(this).attr('resizeheight') || null;
+		var resizequality = $(this).attr('resizequality') || null;
+		var resizemethod = $(this).attr('resizemethod') || null;
+		var resizemimetype = $(this).attr('resizemimetype') || null;
+		var dropmsg = $(this).attr('dropmsg') || 'Choose files or drag and drop files to upload';
+		var input = $(this).attr('input');
+		$(this).dropzone({
+			url: uploadUrl ,
+			maxFilesize:size,
+			uploadMultiple: false,
+			parallelUploads:limit,
+			paramName:'file',
+			maxFiles:limit,
+			resizeWidth: resizewidth,
+			resizeHeight: resizeheight,
+			resizeQuality: resizequality,
+			resizeMethod: resizemethod,
+			resizeMimeType: resizemimetype,
+			acceptedFiles: extensions,
+			addRemoveLinks:true,
+			init: function() {
+				this.on('addedfile', function(file) {
+					//if allow multiple file upload is allowed, then validate maximum number of files
+					var uploadedFiles = $(input).val();
+					var uploadedFilesLength = uploadedFiles.split(',').filter(r => r != '').length;
+					if (uploadedFilesLength >= limit) {
+						showToastDanger("Maximum upload limit reached");
+						this.removeFile(file);
+					}
+				});
+				this.on("success", function(file, uploadedFilesList) {
+					if(limit == 1){
+						$(input).val(uploadedFilesList.toString());
+					}
+					else{
+						var inputFiles = $(input).val().split(",");
+						uploadedFilesList.forEach(function(filepath){
+							if(inputFiles.indexOf(filepath) === -1){
+								inputFiles.push(filepath);
+							}
+						});
+						var filtered = inputFiles.filter(function (el) {
+							return el != "";
+						});
+						$(input).val(filtered.toString());
+					}
+				});
+				this.on("removedfile", function(file) {
+					if(file.xhr){
+						var filename = JSON.parse(file.xhr.responseText).toString();
+						var files = $(input).val();
+						var arrFiles = files.split(',');
+						while (arrFiles.indexOf(filename) !== -1) {
+							arrFiles.splice(arrFiles.indexOf(filename), 1);
+						}
+						$(input).val(arrFiles.toString());
+						var formData = {
+							temp_file: filename
+						}
+						$.ajax({
+							url: "../fileuploader/remove_temp_file",
+							type: "POST",
+							data: formData,
+							success: function(msg) {
+								console.log(msg);
+							},
+							error: function( xhr, err ) {
+								console.error(err);
+							}
+						});
+					}
+				});
+			},
+			dictDefaultMessage: dropmsg,
+			headers: { 'x-csrf-token': csrfToken},
+			/* dictRemoveFile:'' */
+		});
 	});
 	$('.ajax-pagination').each(function(){
 		var pager = $(this);

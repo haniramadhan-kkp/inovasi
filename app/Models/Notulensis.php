@@ -161,17 +161,16 @@ class Notulensis extends Model
      */
 	public static function editFields(){
 		return [ 
-			"id",
 			"kegiatan",
 			"tanggal",
-			"notulen_id",
 			"tempat",
 			"pimpinan_rapat",
 			"isi",
 			"kesimpulan",
 			"undangan",
 			"dokumentasi",
-			"daftar_hadir" 
+			"daftar_hadir",
+			"id" 
 		];
 	}
 }

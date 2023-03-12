@@ -29,6 +29,8 @@ class CreatePinjambmnsTable extends Migration
             $table->string('surat_peminjaman');
             $table->string('foto_pengambilan');
             $table->string('foto_pengembalian');
+            $table->unsignedBigInteger('statuspinjambmn_id');
+            $table->foreign('statuspinjambmn_id')->references('id')->on('statuspinjambmns');
         });
     }
 

@@ -893,6 +893,37 @@
       'filename_prefix' => '',
       'upload_dir' => 'uploads/photos/',
     ),
+    'foto' => 
+    array (
+      'file_name_type' => 'random',
+      'extensions' => 'jpg,png,gif,jpeg',
+      'limit' => 1,
+      'max_file_size' => 3,
+      'return_full_path' => false,
+      'filename_prefix' => '',
+      'upload_dir' => 'uploads/files',
+      'image_resize' => 
+      array (
+        'small' => 
+        array (
+          'width' => 100,
+          'height' => 100,
+          'mode' => 'cover',
+        ),
+        'medium' => 
+        array (
+          'width' => 480,
+          'height' => 480,
+          'mode' => 'contain',
+        ),
+        'large' => 
+        array (
+          'width' => 1024,
+          'height' => 760,
+          'mode' => 'contain',
+        ),
+      ),
+    ),
   ),
   'view' => 
   array (

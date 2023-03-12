@@ -63,6 +63,7 @@ class NotulensisController extends Controller
      */
 	function store(NotulensisAddRequest $request){
 		$modeldata = $this->normalizeFormData($request->validated());
+		$modeldata['notulen_id'] = auth()->user()->id;
 		
 		//save Notulensis record
 		$record = Notulensis::create($modeldata);
@@ -78,6 +79,11 @@ class NotulensisController extends Controller
      */
 	function edit(NotulensisEditRequest $request, $rec_id = null){
 		$query = Notulensis::query();
+		$allowedRoles = auth()->user()->hasRole(["admin"]);
+		if(!$allowedRoles){
+			//check if user is the owner of the record.
+			$query->where("notulensis.notulen_id", auth()->user()->id);
+		}
 		$record = $query->findOrFail($rec_id, Notulensis::editFields());
 		if ($request->isMethod('post')) {
 			$modeldata = $this->normalizeFormData($request->validated());
@@ -98,6 +104,11 @@ class NotulensisController extends Controller
 	function delete(Request $request, $rec_id = null){
 		$arr_id = explode(",", $rec_id);
 		$query = Notulensis::query();
+		$allowedRoles = auth()->user()->hasRole(["admin"]);
+		if(!$allowedRoles){
+			//check if user is the owner of the record.
+			$query->where("notulensis.notulen_id", auth()->user()->id);
+		}
 		$query->whereIn("id", $arr_id);
 		$query->delete();
 		$redirectUrl = $request->redirect ?? url()->previous();

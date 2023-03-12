@@ -24,7 +24,6 @@ class CreateRealisasisTable extends Migration
             $table->string('bukti_bayar');
             $table->string('dokumentasi');
             $table->string('jumlah');
-
         });
     }
 

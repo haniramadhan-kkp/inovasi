@@ -37,6 +37,7 @@ class PinjambmnsEditRequest extends FormRequest
 				"surat_peminjaman" => "filled|string",
 				"foto_pengambilan" => "filled|string",
 				"foto_pengembalian" => "filled|string",
+				"statuspinjambmn_id" => "filled",
             
         ];
     }

@@ -4,6 +4,11 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
 -->
 @inject('comp_model', 'App\Models\ComponentsData')
 <?php
+    //check if current user role is allowed access to the pages
+    $can_add = $user->canAccess("notulensis/add");
+    $can_edit = $user->canAccess("notulensis/edit");
+    $can_view = $user->canAccess("notulensis/view");
+    $can_delete = $user->canAccess("notulensis/delete");
     $pageTitle = "Notulensis Details"; //set dynamic page title
 ?>
 @extends($layout)
@@ -42,6 +47,11 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                             $counter = 0;
                             if($data){
                             $rec_id = ($data['id'] ? urlencode($data['id']) : null);
+                            //check if user is the owner of the record.
+                            $is_record_owner = ($data['notulen_id'] == $user->id);
+                            //allow user with certain roles to manage record
+                            $can_edit_record = $is_record_owner || $user->hasRole(['admin']);
+                            $can_delete_record = $is_record_owner || $user->hasRole(['admin']);
                             $counter++;
                         ?>
                         <div id="page-main-content" class=" px-3 mb-3">
@@ -209,12 +219,16 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                             </div>
                             <!--PageComponentEnd-->
                             <div class="d-flex gap-1 justify-content-start">
+                                <?php if($can_edit_record){ ?>
                                 <a class="btn btn-sm btn-success has-tooltip "   title="Edit" href="<?php print_link("notulensis/edit/$rec_id"); ?>" >
                                 <i class="material-icons">edit</i> Edit
                             </a>
+                            <?php } ?>
+                            <?php if($can_delete_record){ ?>
                             <a class="btn btn-sm btn-danger has-tooltip record-delete-btn" data-prompt-msg="Are you sure you want to delete this record?" data-display-style="modal" title="Delete" href="<?php print_link("notulensis/delete/$rec_id?redirect=notulensis"); ?>" >
                             <i class="material-icons">delete_sweep</i> Delete
                         </a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

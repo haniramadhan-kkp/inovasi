@@ -23,14 +23,15 @@ class UsersEditRequest extends FormRequest
     public function rules()
     {
 		
+		$rec_id = request()->route('rec_id');
+
         return [
             
-				"username" => "filled|string",
-				"email" => "filled|email",
-				"name" => "filled|string",
+				"username" => "filled|string|unique:users,username,$rec_id,id",
 				"nip" => "filled|string",
 				"jabatan" => "filled|string",
-				"foto" => "filled|string",
+				"foto" => "filled",
+				"user_role_id" => "nullable",
             
         ];
     }

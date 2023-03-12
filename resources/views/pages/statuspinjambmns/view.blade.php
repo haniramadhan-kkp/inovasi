@@ -4,6 +4,11 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
 -->
 @inject('comp_model', 'App\Models\ComponentsData')
 <?php
+    //check if current user role is allowed access to the pages
+    $can_add = $user->canAccess("statuspinjambmns/add");
+    $can_edit = $user->canAccess("statuspinjambmns/edit");
+    $can_view = $user->canAccess("statuspinjambmns/view");
+    $can_delete = $user->canAccess("statuspinjambmns/delete");
     $pageTitle = "Statuspinjambmns Details"; //set dynamic page title
 ?>
 @extends($layout)
@@ -45,67 +50,75 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                             $counter++;
                         ?>
                         <div id="page-main-content" class=" px-3 mb-3">
-                            <div class="page-data">
-                                <!--PageComponentStart-->
-                                <div class="mb-3 row row gutter-lg">
-                                    <div class=" col-12 col-md-4">
-                                        <div class="bg-light mb-3 card-1 p-2 border rounded">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <small class="text-muted">Id</small>
-                                                    <div class="fw-bold">
-                                                        <?php echo  $data['id'] ; ?>
+                            <div class="row gutter-lg ">
+                                <div class="col">
+                                    <div class="page-data">
+                                        <!--PageComponentStart-->
+                                        <div class="mb-3 row ">
+                                            <div class="border-top td-id p-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <div class="text-muted"> Id</div>
+                                                        <div class="fw-bold">
+                                                            <?php echo  $data['id'] ; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-top td-created_at p-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <div class="text-muted"> Created At</div>
+                                                        <div class="fw-bold">
+                                                            <?php echo  $data['created_at'] ; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-top td-updated_at p-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <div class="text-muted"> Updated At</div>
+                                                        <div class="fw-bold">
+                                                            <?php echo  $data['updated_at'] ; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-top td-name p-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <div class="text-muted"> Name</div>
+                                                        <div class="fw-bold">
+                                                            <?php echo  $data['name'] ; ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class=" col-12 col-md-4">
-                                        <div class="bg-light mb-3 card-1 p-2 border rounded">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <small class="text-muted">Created At</small>
-                                                    <div class="fw-bold">
-                                                        <?php echo  $data['created_at'] ; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" col-12 col-md-4">
-                                        <div class="bg-light mb-3 card-1 p-2 border rounded">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <small class="text-muted">Updated At</small>
-                                                    <div class="fw-bold">
-                                                        <?php echo  $data['updated_at'] ; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" col-12 col-md-4">
-                                        <div class="bg-light mb-3 card-1 p-2 border rounded">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <small class="text-muted">Name</small>
-                                                    <div class="fw-bold">
-                                                        <?php echo  $data['name'] ; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <!--PageComponentEnd-->
+                                        <div class="d-flex gap-1 justify-content-start">
+                                            <?php if($can_edit){ ?>
+                                            <a class="btn btn-sm btn-success has-tooltip "   title="Edit" href="<?php print_link("statuspinjambmns/edit/$rec_id"); ?>" >
+                                            <i class="material-icons">edit</i> Edit
+                                        </a>
+                                        <?php } ?>
+                                        <?php if($can_delete){ ?>
+                                        <a class="btn btn-sm btn-danger has-tooltip record-delete-btn" data-prompt-msg="Are you sure you want to delete this record?" data-display-style="modal" title="Delete" href="<?php print_link("statuspinjambmns/delete/$rec_id?redirect=statuspinjambmns"); ?>" >
+                                        <i class="material-icons">delete_sweep</i> Delete
+                                    </a>
+                                    <?php } ?>
                                 </div>
-                                <!--PageComponentEnd-->
-                                <div class="d-flex gap-1 justify-content-start">
-                                    <a class="btn btn-sm btn-success has-tooltip "   title="Edit" href="<?php print_link("statuspinjambmns/edit/$rec_id"); ?>" >
-                                    <i class="material-icons">edit</i> Edit
-                                </a>
-                                <a class="btn btn-sm btn-danger has-tooltip record-delete-btn" data-prompt-msg="Are you sure you want to delete this record?" data-display-style="modal" title="Delete" href="<?php print_link("statuspinjambmns/delete/$rec_id?redirect=statuspinjambmns"); ?>" >
-                                <i class="material-icons">delete_sweep</i> Delete
-                            </a>
+                            </div>
                         </div>
+                        <!-- Detail Page Column -->
+                        <?php if(!request()->has('subpage')){ ?>
+                        <div class="col-12">
+                            <div class="my-3 p-1 ">
+                                @include("pages.statuspinjambmns.detail-pages", ["masterRecordId" => $rec_id])
+                            </div>
+                        </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <?php

@@ -14,12 +14,41 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
+
+
+	Route::get('', 'IndexController@index')->name('index')->middleware(['redirect.to.home']);
+	Route::get('index/login', 'IndexController@login')->name('login');
 	
-	Route::get('', 'HomeController@index')->name('index');
+	Route::post('auth/login', 'AuthController@login')->name('auth.login');
+	Route::any('auth/logout', 'AuthController@logout')->name('logout')->middleware(['auth']);
+
+	Route::get('auth/accountcreated', 'AuthController@accountcreated')->name('accountcreated');
+	Route::get('auth/accountpending', 'AuthController@accountpending')->name('accountpending');
+	Route::get('auth/accountblocked', 'AuthController@accountblocked')->name('accountblocked');
+	Route::get('auth/accountinactive', 'AuthController@accountinactive')->name('accountinactive');
+
+
+	
+	Route::get('auth/register', 'AuthController@register')->name('auth.register')->middleware(['redirect.to.home']);
+	Route::post('auth/register', 'AuthController@register_store')->name('auth.register_store');
+		
+	Route::post('auth/login', 'AuthController@login')->name('auth.login');
+	Route::get('auth/password/forgotpassword', 'AuthController@showForgotPassword')->name('password.forgotpassword');
+	Route::post('auth/password/sendemail', 'AuthController@sendPasswordResetLink')->name('password.email');
+	Route::get('auth/password/reset', 'AuthController@showResetPassword')->name('password.reset.token');
+	Route::post('auth/password/resetpassword', 'AuthController@resetPassword')->name('password.resetpassword');
+	Route::get('auth/password/resetcompleted', 'AuthController@passwordResetCompleted')->name('password.resetcompleted');
+	Route::get('auth/password/linksent', 'AuthController@passwordResetLinkSent')->name('password.resetlinksent');
+	
+
+/**
+ * All routes which requires auth
+ */
+Route::middleware(['auth', 'rbac'])->group(function () {
+		
 	Route::get('home', 'HomeController@index')->name('home');
 
-
-
+	
 
 /* routes for Akuns Controller */	
 	Route::get('akuns', 'AkunsController@index')->name('akuns.index');
@@ -68,29 +97,6 @@ use Illuminate\Support\Facades\Mail;
 	Route::any('komponens/edit/{rec_id}', 'KomponensController@edit')->name('komponens.edit');	
 	Route::get('komponens/delete/{rec_id}', 'KomponensController@delete');
 
-/* routes for Notulensiroles Controller */	
-	Route::get('notulensiroles', 'NotulensirolesController@index')->name('notulensiroles.index');
-	Route::get('notulensiroles/index', 'NotulensirolesController@index')->name('notulensiroles.index');
-	Route::get('notulensiroles/index/{filter?}/{filtervalue?}', 'NotulensirolesController@index')->name('notulensiroles.index');	
-	Route::get('notulensiroles/view/{rec_id}', 'NotulensirolesController@view')->name('notulensiroles.view');
-	Route::get('notulensiroles/masterdetail/{rec_id}', 'NotulensirolesController@masterDetail')->name('notulensiroles.masterdetail');	
-	Route::get('notulensiroles/add', 'NotulensirolesController@add')->name('notulensiroles.add');
-	Route::post('notulensiroles/add', 'NotulensirolesController@store')->name('notulensiroles.store');
-		
-	Route::any('notulensiroles/edit/{rec_id}', 'NotulensirolesController@edit')->name('notulensiroles.edit');	
-	Route::get('notulensiroles/delete/{rec_id}', 'NotulensirolesController@delete');
-
-/* routes for Notulensiroleusers Controller */	
-	Route::get('notulensiroleusers', 'NotulensiroleusersController@index')->name('notulensiroleusers.index');
-	Route::get('notulensiroleusers/index', 'NotulensiroleusersController@index')->name('notulensiroleusers.index');
-	Route::get('notulensiroleusers/index/{filter?}/{filtervalue?}', 'NotulensiroleusersController@index')->name('notulensiroleusers.index');	
-	Route::get('notulensiroleusers/view/{rec_id}', 'NotulensiroleusersController@view')->name('notulensiroleusers.view');	
-	Route::get('notulensiroleusers/add', 'NotulensiroleusersController@add')->name('notulensiroleusers.add');
-	Route::post('notulensiroleusers/add', 'NotulensiroleusersController@store')->name('notulensiroleusers.store');
-		
-	Route::any('notulensiroleusers/edit/{rec_id}', 'NotulensiroleusersController@edit')->name('notulensiroleusers.edit');	
-	Route::get('notulensiroleusers/delete/{rec_id}', 'NotulensiroleusersController@delete');
-
 /* routes for Notulensis Controller */	
 	Route::get('notulensis', 'NotulensisController@index')->name('notulensis.index');
 	Route::get('notulensis/index', 'NotulensisController@index')->name('notulensis.index');
@@ -125,6 +131,17 @@ use Illuminate\Support\Facades\Mail;
 	Route::any('penugasans/edit/{rec_id}', 'PenugasansController@edit')->name('penugasans.edit');	
 	Route::get('penugasans/delete/{rec_id}', 'PenugasansController@delete');
 
+/* routes for Permissions Controller */	
+	Route::get('permissions', 'PermissionsController@index')->name('permissions.index');
+	Route::get('permissions/index', 'PermissionsController@index')->name('permissions.index');
+	Route::get('permissions/index/{filter?}/{filtervalue?}', 'PermissionsController@index')->name('permissions.index');	
+	Route::get('permissions/view/{rec_id}', 'PermissionsController@view')->name('permissions.view');	
+	Route::get('permissions/add', 'PermissionsController@add')->name('permissions.add');
+	Route::post('permissions/add', 'PermissionsController@store')->name('permissions.store');
+		
+	Route::any('permissions/edit/{rec_id}', 'PermissionsController@edit')->name('permissions.edit');	
+	Route::get('permissions/delete/{rec_id}', 'PermissionsController@delete');
+
 /* routes for Pinjambmns Controller */	
 	Route::get('pinjambmns', 'PinjambmnsController@index')->name('pinjambmns.index');
 	Route::get('pinjambmns/index', 'PinjambmnsController@index')->name('pinjambmns.index');
@@ -134,7 +151,13 @@ use Illuminate\Support\Facades\Mail;
 	Route::post('pinjambmns/add', 'PinjambmnsController@store')->name('pinjambmns.store');
 		
 	Route::any('pinjambmns/edit/{rec_id}', 'PinjambmnsController@edit')->name('pinjambmns.edit');	
-	Route::get('pinjambmns/delete/{rec_id}', 'PinjambmnsController@delete');
+	Route::get('pinjambmns/delete/{rec_id}', 'PinjambmnsController@delete');	
+	Route::get('pinjambmns/ajukan_pinjam_bmn', 'PinjambmnsController@ajukan_pinjam_bmn')->name('pinjambmns.ajukan_pinjam_bmn');
+	Route::post('pinjambmns/ajukan_pinjam_bmn', 'PinjambmnsController@ajukan_pinjam_bmn_store')->name('pinjambmns.ajukan_pinjam_bmn_store');
+		
+	Route::any('pinjambmns/proses_pengambilan_bmn/{rec_id}', 'PinjambmnsController@proses_pengambilan_bmn')->name('pinjambmns.proses_pengambilan_bmn');	
+	Route::get('pinjambmns/list_proses_pengambilan_bmn', 'PinjambmnsController@list_proses_pengambilan_bmn');
+	Route::get('pinjambmns/list_proses_pengambilan_bmn/{filter?}/{filtervalue?}', 'PinjambmnsController@list_proses_pengambilan_bmn');
 
 /* routes for Programs Controller */	
 	Route::get('programs', 'ProgramsController@index')->name('programs.index');
@@ -159,6 +182,18 @@ use Illuminate\Support\Facades\Mail;
 	Route::any('realisasis/edit/{rec_id}', 'RealisasisController@edit')->name('realisasis.edit');	
 	Route::get('realisasis/delete/{rec_id}', 'RealisasisController@delete');
 
+/* routes for Roles Controller */	
+	Route::get('roles', 'RolesController@index')->name('roles.index');
+	Route::get('roles/index', 'RolesController@index')->name('roles.index');
+	Route::get('roles/index/{filter?}/{filtervalue?}', 'RolesController@index')->name('roles.index');	
+	Route::get('roles/view/{rec_id}', 'RolesController@view')->name('roles.view');
+	Route::get('roles/masterdetail/{rec_id}', 'RolesController@masterDetail')->name('roles.masterdetail');	
+	Route::get('roles/add', 'RolesController@add')->name('roles.add');
+	Route::post('roles/add', 'RolesController@store')->name('roles.store');
+		
+	Route::any('roles/edit/{rec_id}', 'RolesController@edit')->name('roles.edit');	
+	Route::get('roles/delete/{rec_id}', 'RolesController@delete');
+
 /* routes for Statusizinkepegawaians Controller */	
 	Route::get('statusizinkepegawaians', 'StatusizinkepegawaiansController@index')->name('statusizinkepegawaians.index');
 	Route::get('statusizinkepegawaians/index', 'StatusizinkepegawaiansController@index')->name('statusizinkepegawaians.index');
@@ -175,7 +210,8 @@ use Illuminate\Support\Facades\Mail;
 	Route::get('statuspinjambmns', 'StatuspinjambmnsController@index')->name('statuspinjambmns.index');
 	Route::get('statuspinjambmns/index', 'StatuspinjambmnsController@index')->name('statuspinjambmns.index');
 	Route::get('statuspinjambmns/index/{filter?}/{filtervalue?}', 'StatuspinjambmnsController@index')->name('statuspinjambmns.index');	
-	Route::get('statuspinjambmns/view/{rec_id}', 'StatuspinjambmnsController@view')->name('statuspinjambmns.view');	
+	Route::get('statuspinjambmns/view/{rec_id}', 'StatuspinjambmnsController@view')->name('statuspinjambmns.view');
+	Route::get('statuspinjambmns/masterdetail/{rec_id}', 'StatuspinjambmnsController@masterDetail')->name('statuspinjambmns.masterdetail');	
 	Route::get('statuspinjambmns/add', 'StatuspinjambmnsController@add')->name('statuspinjambmns.add');
 	Route::post('statuspinjambmns/add', 'StatuspinjambmnsController@store')->name('statuspinjambmns.store');
 		
@@ -212,18 +248,14 @@ use Illuminate\Support\Facades\Mail;
 	Route::get('users/index/{filter?}/{filtervalue?}', 'UsersController@index')->name('users.index');	
 	Route::get('users/view/{rec_id}', 'UsersController@view')->name('users.view');
 	Route::get('users/masterdetail/{rec_id}', 'UsersController@masterDetail')->name('users.masterdetail');	
+	Route::any('account/edit', 'AccountController@edit')->name('account.edit');	
+	Route::get('account', 'AccountController@index');	
+	Route::post('account/changepassword', 'AccountController@changepassword')->name('account.changepassword');	
 	Route::get('users/add', 'UsersController@add')->name('users.add');
 	Route::post('users/add', 'UsersController@store')->name('users.store');
 		
 	Route::any('users/edit/{rec_id}', 'UsersController@edit')->name('users.edit');	
 	Route::get('users/delete/{rec_id}', 'UsersController@delete');
-
-/**
- * All routes which requires auth
- */
-Route::middleware(['auth'])->group(function () {
-	
-	
 });
 
 
@@ -232,59 +264,77 @@ Route::get('componentsdata/subkomponen_id_option_list',  function(Request $reque
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->subkomponen_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/statusizinkepegawaian_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->statusizinkepegawaian_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/pegawai_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->pegawai_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/program_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->program_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/suboutput_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->suboutput_id_option_list($request);
 	}
-);
-	
-Route::get('componentsdata/notulensirole_id_option_list',  function(Request $request){
-		$compModel = new App\Models\ComponentsData();
-		return $compModel->notulensirole_id_option_list($request);
-	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/kegiatan_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->kegiatan_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
+	
+Route::get('componentsdata/role_id_option_list',  function(Request $request){
+		$compModel = new App\Models\ComponentsData();
+		return $compModel->role_id_option_list($request);
+	}
+)->middleware(['auth']);
+	
+Route::get('componentsdata/statuspinjambmn_id_option_list',  function(Request $request){
+		$compModel = new App\Models\ComponentsData();
+		return $compModel->statuspinjambmn_id_option_list($request);
+	}
+)->middleware(['auth']);
 	
 Route::get('componentsdata/akun_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->akun_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/komponen_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->komponen_id_option_list($request);
 	}
-);
+)->middleware(['auth']);
 	
 Route::get('componentsdata/output_id_option_list',  function(Request $request){
 		$compModel = new App\Models\ComponentsData();
 		return $compModel->output_id_option_list($request);
+	}
+)->middleware(['auth']);
+	
+Route::get('componentsdata/users_username_value_exist',  function(Request $request){
+		$compModel = new App\Models\ComponentsData();
+		return $compModel->users_username_value_exist($request);
+	}
+);
+	
+Route::get('componentsdata/users_email_value_exist',  function(Request $request){
+		$compModel = new App\Models\ComponentsData();
+		return $compModel->users_email_value_exist($request);
 	}
 );
 

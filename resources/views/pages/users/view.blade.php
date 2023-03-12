@@ -4,6 +4,11 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
 -->
 @inject('comp_model', 'App\Models\ComponentsData')
 <?php
+    //check if current user role is allowed access to the pages
+    $can_add = $user->canAccess("users/add");
+    $can_edit = $user->canAccess("users/edit");
+    $can_view = $user->canAccess("users/view");
+    $can_delete = $user->canAccess("users/delete");
     $pageTitle = "Users Details"; //set dynamic page title
 ?>
 @extends($layout)
@@ -114,18 +119,6 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                                                 <div class="bg-light mb-3 card-1 p-2 border rounded">
                                                     <div class="row align-items-center">
                                                         <div class="col">
-                                                            <small class="text-muted">Name</small>
-                                                            <div class="fw-bold">
-                                                                <?php echo  $data['name'] ; ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class=" col-12 col-md-4">
-                                                <div class="bg-light mb-3 card-1 p-2 border rounded">
-                                                    <div class="row align-items-center">
-                                                        <div class="col">
                                                             <small class="text-muted">Nip</small>
                                                             <div class="fw-bold">
                                                                 <?php echo  $data['nip'] ; ?>
@@ -150,50 +143,56 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                                                 <div class="bg-light mb-3 card-1 p-2 border rounded">
                                                     <div class="row align-items-center">
                                                         <div class="col">
-                                                            <small class="text-muted">Foto</small>
+                                                            <small class="text-muted">User Role Id</small>
                                                             <div class="fw-bold">
-                                                                <?php echo  $data['foto'] ; ?>
-                                                            </div>
+                                                                <a size="sm" class="btn btn-sm btn btn-secondary page-modal" href="<?php print_link("roles/view/$data[user_role_id]?subpage=1") ?>">
+                                                                <i class="material-icons">visibility</i> <?php echo "Roles Detail" ?>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--PageComponentEnd-->
-                                        <div class="d-flex gap-1 justify-content-start">
-                                            <a class="btn btn-sm btn-success has-tooltip "   title="Edit" href="<?php print_link("users/edit/$rec_id"); ?>" >
-                                            <i class="material-icons">edit</i> Edit
-                                        </a>
-                                        <a class="btn btn-sm btn-danger has-tooltip record-delete-btn" data-prompt-msg="Are you sure you want to delete this record?" data-display-style="modal" title="Delete" href="<?php print_link("users/delete/$rec_id?redirect=users"); ?>" >
-                                        <i class="material-icons">delete_sweep</i> Delete
+                                    </div>
+                                    <!--PageComponentEnd-->
+                                    <div class="d-flex gap-1 justify-content-start">
+                                        <?php if($can_edit){ ?>
+                                        <a class="btn btn-sm btn-success has-tooltip "   title="Edit" href="<?php print_link("users/edit/$rec_id"); ?>" >
+                                        <i class="material-icons">edit</i> Edit
                                     </a>
-                                </div>
+                                    <?php } ?>
+                                    <?php if($can_delete){ ?>
+                                    <a class="btn btn-sm btn-danger has-tooltip record-delete-btn" data-prompt-msg="Are you sure you want to delete this record?" data-display-style="modal" title="Delete" href="<?php print_link("users/delete/$rec_id?redirect=users"); ?>" >
+                                    <i class="material-icons">delete_sweep</i> Delete
+                                </a>
+                                <?php } ?>
                             </div>
                         </div>
-                        <!-- Detail Page Column -->
-                        <?php if(!request()->has('subpage')){ ?>
-                        <div class="col-12">
-                            <div class="my-3 p-1 ">
-                                @include("pages.users.detail-pages", ["masterRecordId" => $rec_id])
-                            </div>
-                        </div>
-                        <?php } ?>
                     </div>
+                    <!-- Detail Page Column -->
+                    <?php if(!request()->has('subpage')){ ?>
+                    <div class="col-12">
+                        <div class="my-3 p-1 ">
+                            @include("pages.users.detail-pages", ["masterRecordId" => $rec_id])
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
-                <?php
-                    }
-                    else{
-                ?>
-                <!-- Empty Record Message -->
-                <div class="text-muted p-3">
-                    <i class="material-icons">block</i> No Record Found
-                </div>
-                <?php
-                    }
-                ?>
             </div>
+            <?php
+                }
+                else{
+            ?>
+            <!-- Empty Record Message -->
+            <div class="text-muted p-3">
+                <i class="material-icons">block</i> No Record Found
+            </div>
+            <?php
+                }
+            ?>
         </div>
     </div>
+</div>
 </div>
 </div>
 </section>

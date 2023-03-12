@@ -49,7 +49,8 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                                         </div>
                                         <div class="col-sm-8">
                                             <div id="ctrl-username-holder" class=" ">
-                                                <input id="ctrl-username" data-field="username"  value="<?php echo get_value('username') ?>" type="text" placeholder="Enter Username"  required="" name="username"  class="form-control " />
+                                                <input id="ctrl-username" data-field="username"  value="<?php echo get_value('username') ?>" type="text" placeholder="Enter Username"  required="" name="username"  data-url="componentsdata/users_username_value_exist/" data-loading-msg="Checking availability ..." data-available-msg="Available" data-unavailable-msg="Not available" class="form-control  ctrl-check-duplicate" />
+                                                <div class="check-status"></div> 
                                             </div>
                                         </div>
                                     </div>
@@ -61,7 +62,8 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                                         </div>
                                         <div class="col-sm-8">
                                             <div id="ctrl-email-holder" class=" ">
-                                                <input id="ctrl-email" data-field="email"  value="<?php echo get_value('email') ?>" type="email" placeholder="Enter Email"  required="" name="email"  class="form-control " />
+                                                <input id="ctrl-email" data-field="email"  value="<?php echo get_value('email') ?>" type="email" placeholder="Enter Email"  required="" name="email"  data-url="componentsdata/users_email_value_exist/" data-loading-msg="Checking availability ..." data-available-msg="Available" data-unavailable-msg="Not available" class="form-control  ctrl-check-duplicate" />
+                                                <div class="check-status"></div> 
                                             </div>
                                         </div>
                                     </div>
@@ -109,47 +111,42 @@ e.g $arrDataFromDb = $comp_model->fetchData(); //function name
                                 <div class="form-group ">
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <label class="control-label" for="name">Name <span class="text-danger">*</span></label>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div id="ctrl-name-holder" class=" ">
-                                                <input id="ctrl-name" data-field="name"  value="<?php echo get_value('name') ?>" type="text" placeholder="Enter Name"  required="" name="name"  class="form-control " />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <label class="control-label" for="nip">Nip <span class="text-danger">*</span></label>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div id="ctrl-nip-holder" class=" ">
-                                                <input id="ctrl-nip" data-field="nip"  value="<?php echo get_value('nip') ?>" type="text" placeholder="Enter Nip"  required="" name="nip"  class="form-control " />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <label class="control-label" for="jabatan">Jabatan <span class="text-danger">*</span></label>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div id="ctrl-jabatan-holder" class=" ">
-                                                <input id="ctrl-jabatan" data-field="jabatan"  value="<?php echo get_value('jabatan') ?>" type="text" placeholder="Enter Jabatan"  required="" name="jabatan"  class="form-control " />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="row">
-                                        <div class="col-sm-4">
                                             <label class="control-label" for="foto">Foto <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-sm-8">
                                             <div id="ctrl-foto-holder" class=" ">
-                                                <input id="ctrl-foto" data-field="foto"  value="<?php echo get_value('foto') ?>" type="text" placeholder="Enter Foto"  required="" name="foto"  class="form-control " />
+                                                <div class="dropzone required" input="#ctrl-foto" fieldname="foto" uploadurl="{{ url('fileuploader/upload/foto') }}"    data-multiple="false" dropmsg="Choose files or drop files here"    btntext="Browse" extensions=".jpg,.png,.gif,.jpeg" filesize="3" maximum="1">
+                                                    <input name="foto" id="ctrl-foto" data-field="foto" required="" class="dropzone-input form-control" value="<?php echo get_value('foto') ?>" type="text"  />
+                                                    <!--<div class="invalid-feedback animated bounceIn text-center">Please a choose file</div>-->
+                                                    <div class="dz-file-limit animated bounceIn text-center text-danger"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label class="control-label" for="user_role_id">User Role Id </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div id="ctrl-user_role_id-holder" class=" ">
+                                                <select  id="ctrl-user_role_id" data-field="user_role_id" name="user_role_id"  placeholder="Select a value ..."    class="form-select" >
+                                                <option value="">Select a value ...</option>
+                                                <?php 
+                                                    $options = $comp_model->role_id_option_list() ?? [];
+                                                    foreach($options as $option){
+                                                    $value = $option->value;
+                                                    $label = $option->label ?? $value;
+                                                    $selected = Html::get_field_selected('user_role_id', $value, "");
+                                                ?>
+                                                <option <?php echo $selected; ?> value="<?php echo $value; ?>">
+                                                <?php echo $label; ?>
+                                                </option>
+                                                <?php
+                                                    }
+                                                ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

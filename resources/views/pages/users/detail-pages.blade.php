@@ -12,24 +12,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="tab" href="#notulensiroleusers_<?php echo $page_id ?>" class="nav-link ">
-                Users Notulensiroleusers
+                <a data-bs-toggle="tab" href="#izinkepegawaians_<?php echo $page_id ?>" class="nav-link ">
+                Users Izinkepegawaians
             </a>
         </li>
         <li class="nav-item">
-            <a data-bs-toggle="tab" href="#izinkepegawaians_<?php echo $page_id ?>" class="nav-link ">
-            Users Izinkepegawaians
+            <a data-bs-toggle="tab" href="#penugasans_<?php echo $page_id ?>" class="nav-link ">
+            Users Penugasans
         </a>
     </li>
     <li class="nav-item">
         <a data-bs-toggle="tab" href="#penugasans_<?php echo $page_id ?>" class="nav-link ">
         Users Penugasans
     </a>
-</li>
-<li class="nav-item">
-    <a data-bs-toggle="tab" href="#penugasans_<?php echo $page_id ?>" class="nav-link ">
-    Users Penugasans
-</a>
 </li>
 <li class="nav-item">
     <a data-bs-toggle="tab" href="#pinjambmns_<?php echo $page_id ?>" class="nav-link ">
@@ -56,24 +51,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="tab-pane fade show " id="notulensiroleusers_<?php echo $page_id ?>" role="tabpanel">
-<div class=" ">
-    <?php
-        $params = ['user_id' => $rec_id,'show_header' => false]; //new query param
-        $query = array_merge(request()->query(), $params);
-        $queryParams = http_build_query($query);
-        $url = url("notulensiroleusers/index/user_id/$rec_id?$queryParams");
-    ?>
-    <div class="ajax-inline-page" data-url="{{ $url }}" >
-        <div class="ajax-page-load-indicator">
-            <div class="text-center d-flex justify-content-center load-indicator">
-                <span class="loader mr-3"></span>
-                <span class="fw-bold">Loading...</span>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 <div class="tab-pane fade show " id="izinkepegawaians_<?php echo $page_id ?>" role="tabpanel">
 <div class=" ">

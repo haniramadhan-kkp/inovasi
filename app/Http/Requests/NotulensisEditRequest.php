@@ -27,7 +27,6 @@ class NotulensisEditRequest extends FormRequest
             
 				"kegiatan" => "filled|string",
 				"tanggal" => "filled|date",
-				"notulen_id" => "filled",
 				"tempat" => "filled|string",
 				"pimpinan_rapat" => "filled|string",
 				"isi" => "filled",

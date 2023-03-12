@@ -1,6 +1,8 @@
 <?php 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UsersRegisterRequest;
+use App\Http\Requests\UsersAccountEditRequest;
 use App\Http\Requests\UsersAddRequest;
 use App\Http\Requests\UsersEditRequest;
 use App\Models\Users;
@@ -73,10 +75,17 @@ class UsersController extends Controller
      */
 	function store(UsersAddRequest $request){
 		$modeldata = $this->normalizeFormData($request->validated());
+		
+		if( array_key_exists("foto", $modeldata) ){
+			//move uploaded file from temp directory to destination directory
+			$fileInfo = $this->moveUploadedFiles($modeldata['foto'], "foto");
+			$modeldata['foto'] = $fileInfo['filepath'];
+		}
 		$modeldata['password'] = bcrypt($modeldata['password']);
 		
 		//save Users record
 		$record = Users::create($modeldata);
+		$record->assignRole("Admin"); //set default role for user
 		$rec_id = $record->id;
 		return $this->redirect("users", "Record added successfully");
 	}
@@ -92,6 +101,12 @@ class UsersController extends Controller
 		$record = $query->findOrFail($rec_id, Users::editFields());
 		if ($request->isMethod('post')) {
 			$modeldata = $this->normalizeFormData($request->validated());
+		
+		if( array_key_exists("foto", $modeldata) ){
+			//move uploaded file from temp directory to destination directory
+			$fileInfo = $this->moveUploadedFiles($modeldata['foto'], "foto");
+			$modeldata['foto'] = $fileInfo['filepath'];
+		}
 			$record->update($modeldata);
 			return $this->redirect("users", "Record updated successfully");
 		}
